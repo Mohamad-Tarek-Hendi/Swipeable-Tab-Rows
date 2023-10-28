@@ -3,9 +3,14 @@ package com.example.swipeabletabrows
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
@@ -32,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.example.swipeabletabrows.ui.theme.SwipeableTabRowsTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +68,9 @@ class MainActivity : ComponentActivity() {
                         mutableIntStateOf(0)
                     }
 
+                    val pagerState = rememberPagerState {
+                        tabItems.size
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -89,6 +98,20 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
+                        }
+
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) { index ->
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = tabItems[index].title)
+                            }
                         }
                     }
                 }
