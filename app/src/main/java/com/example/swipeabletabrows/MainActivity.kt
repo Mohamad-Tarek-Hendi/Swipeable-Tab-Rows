@@ -20,11 +20,13 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -71,11 +73,21 @@ class MainActivity : ComponentActivity() {
                     val pagerState = rememberPagerState {
                         tabItems.size
                     }
+
+                    LaunchedEffect(selectedTabIndex) {
+                        pagerState.animateScrollToPage(selectedTabIndex)
+                    }
+
+                    LaunchedEffect(pagerState.currentPage) {
+                        selectedTabIndex = pagerState.currentPage
+                    }
+
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(10.dp)
                     ) {
+                        // If we have several item we can use ScrollableTabRow Composable
                         TabRow(
                             selectedTabIndex = selectedTabIndex
                         ) {
